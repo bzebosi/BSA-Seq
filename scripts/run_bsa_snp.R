@@ -15,7 +15,7 @@ packages <- c(
 )
 
 # Install/load required packages
-Install_multi_package_bz(packages)
+Install_pkgs(packages)
 
 
 # -------------------------------------------------
