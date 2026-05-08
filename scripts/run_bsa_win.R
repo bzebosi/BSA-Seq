@@ -16,3 +16,36 @@ packages <- c(
 
 # Install required packages
 Install_multi_package_bz(packages)
+
+message("Select a config file")
+
+cfg_file <- file.choose()
+
+source(cfg_file)
+
+
+message("BSA-Seq SNP environment ready")
+message("Running analysis...")
+
+# --------------------------------
+# Run BSA-SNP analysis
+# --------------------------------
+results <- list()
+
+for (s in names(cfg)) {
+  
+  message("\n=== Running ", s, " ===")
+  
+  args <- c(
+    list(
+      vcf_dir = cfg[[s]]$vcf_dir,
+      output_dir = cfg[[s]]$output_dir,
+      wt_list = cfg[[s]]$wt_list,
+      mt_list = cfg[[s]]$mt_list,
+      prefix_list = cfg[[s]]$prefix_list
+    ),
+    common_args
+  )
+  
+  results[[s]] <- do.call(run_bsa_win, args)
+}
