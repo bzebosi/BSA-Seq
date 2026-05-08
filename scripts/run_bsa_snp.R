@@ -69,6 +69,6 @@ for (s in names(cfg)) {
 
 
 # Save results
-saveRDS(results, "results_bsa_snp.rds")
+# saveRDS(results, "results_bsa_snp.rds")
 
 message("\nAnalysis complete")
