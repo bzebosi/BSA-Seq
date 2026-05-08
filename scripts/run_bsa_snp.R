@@ -64,7 +64,7 @@ for (s in names(cfg)) {
     common_args
   )
   
-  results[[s]] <- do.call(run_bsa_snp, args)
+  results[[s]] <- do.call(bsa_snp_all, args)
 }
 
 

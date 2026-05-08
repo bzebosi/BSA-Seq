@@ -64,7 +64,7 @@ for (s in names(cfg)) {
     common_args
   )
   
-  results[[s]] <- do.call(run_bsa_win, args)
+  results[[s]] <- do.call(bsa_window_all , args)
 }
 
 
