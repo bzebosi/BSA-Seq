@@ -17,21 +17,36 @@ packages <- c(
 # Install/load required packages
 Install_multi_package_bz(packages)
 
-# Choose config interactively
-# --------------------------------
-message("Select a config file")
 
-cfg_file <- file.choose()
+# -------------------------------------------------
+# Load config
+# -------------------------------------------------
 
-source(cfg_file)
+# Option 1: use already loaded cfg/common_args
+if (exists("cfg") && is.list(cfg) &&
+    exists("common_args") && is.list(common_args)) {
+  
+  message("Using existing config in environment")
+  
+} else {
+  
+  # Option 2: choose config interactively
+  message("Select config file")
+  
+  cfg_file <- file.choose()
+  
+  source(cfg_file)
+}
 
 
 message("BSA-Seq SNP environment ready")
 message("Running analysis...")
 
-# --------------------------------
+
+# -------------------------------------------------
 # Run BSA-SNP analysis
-# --------------------------------
+# -------------------------------------------------
+
 results <- list()
 
 for (s in names(cfg)) {
@@ -51,3 +66,9 @@ for (s in names(cfg)) {
   
   results[[s]] <- do.call(run_bsa_snp, args)
 }
+
+
+# Save results
+saveRDS(results, "results_bsa_snp.rds")
+
+message("\nAnalysis complete")

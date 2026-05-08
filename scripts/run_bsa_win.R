@@ -1,35 +1,52 @@
-src_base <- "https://raw.githubusercontent.com/bzebosi/BSA-Seq/main/R/"
+base <- "https://raw.githubusercontent.com/bzebosi/BSA-Seq/main/"
+src_base <- paste0(base, "R/")
 
+# Load pipeline functions
 for (f in c("install_pkgs.R", "utils.R", 
-            "plot_bsa.R", "core_bsa.R", "bsa_win.R")) {
-  source(paste0(src_base, f), local = TRUE)
+            "plot_bsa.R", "core_bsa.R", "bsa_snp.R")) {
+  source(paste0(src_base, f))
 }
 
-message("BSA-Seq SNP environment ready. Call run_bsa_snp() when you’re set.")
-
-# required packages
+# Required packages
 packages <- c(
   "reshape2", "readxl", "BiocManager", "zoo", "plyr", "GlobalOptions", 
   "shape", "scales", "tidyverse", "openxlsx", "stringr", "IRanges", "magrittr", 
   "data.table", "naturalsort", "locfit", "rlang"
 )
 
-# Install required packages
+# Install/load required packages
 Install_multi_package_bz(packages)
 
-message("Select a config file")
 
-cfg_file <- file.choose()
+# -------------------------------------------------
+# Load config
+# -------------------------------------------------
 
-source(cfg_file)
+# Option 1: use already loaded cfg/common_args
+if (exists("cfg") && is.list(cfg) &&
+    exists("common_args") && is.list(common_args)) {
+  
+  message("Using existing config in environment")
+  
+} else {
+  
+  # Option 2: choose config interactively
+  message("Select config file")
+  
+  cfg_file <- file.choose()
+  
+  source(cfg_file)
+}
 
 
 message("BSA-Seq SNP environment ready")
 message("Running analysis...")
 
-# --------------------------------
+
+# -------------------------------------------------
 # Run BSA-SNP analysis
-# --------------------------------
+# -------------------------------------------------
+
 results <- list()
 
 for (s in names(cfg)) {
@@ -49,3 +66,9 @@ for (s in names(cfg)) {
   
   results[[s]] <- do.call(run_bsa_win, args)
 }
+
+
+# Save results
+saveRDS(results, "results_bsa_snp.rds")
+
+message("\nAnalysis complete")
