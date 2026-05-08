@@ -1,5 +1,5 @@
 # Function install and load multiple packages at once
-Install_packages <- function(packages) {
+Install_pkgs <- function(packages) {
   # Remove duplicates
   packages <- unique(packages)
   
@@ -39,12 +39,12 @@ Install_packages <- function(packages) {
 }
 
 # Example usage
-packages <- c(
- "reshape2", "grid","locfit", "readxl", "BiocManager", "reshape2", "dplyr",
- "tidyr’","zoo", "plyr", "ggplot2","GlobalOptions", "openxlsx", "stringr",
- "data.table", "naturalsort", "rlang", "purrr", "scales"
-)
-
-Install_packages(packages)
+# packages <- c(
+#  "reshape2", "grid","locfit", "readxl", "BiocManager", "reshape2", "dplyr",
+#  "tidyr’","zoo", "plyr", "ggplot2","GlobalOptions", "openxlsx", "stringr",
+#  "data.table", "naturalsort", "rlang", "purrr", "scales"
+# )
+# 
+# Install_pkg(packages)
 
 
