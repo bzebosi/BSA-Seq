@@ -4,7 +4,14 @@ src_base <- paste0(base, "R/")
 # Load pipeline functions
 for (f in c("install_pkgs.R", "utils.R", 
             "plot_bsa.R", "core_bsa.R", "bsa_win.R")) {
-  source(paste0(src_base, f))
+  url <- paste0(src_base, f)
+  message("Sourcing: ", url)
+  source(url)
+}
+
+# Check bsa_window_all loaded
+if (!exists("bsa_window_all")) {
+  stop("bsa_window_all() was not loaded. Check R/bsa_win.R")
 }
 
 # Required packages
@@ -64,7 +71,7 @@ for (s in names(cfg)) {
     common_args
   )
   
-  results[[s]] <- do.call(get("bsa_window_all"), args)
+  results[[s]] <- do.call(bsa_window_all, args)
 }
 
 
