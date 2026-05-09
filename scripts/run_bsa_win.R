@@ -3,7 +3,7 @@ src_base <- paste0(base, "R/")
 
 # Load pipeline functions
 for (f in c("install_pkgs.R", "utils.R", 
-            "plot_bsa.R", "core_bsa.R", "bsa_snp.R")) {
+            "plot_bsa.R", "core_bsa.R", "bsa_win.R")) {
   source(paste0(src_base, f))
 }
 
