@@ -822,13 +822,22 @@ bsa_window <- function(
       intervals_dir <- file.path(output_dir, "intervals", subfolder)
       ensure_dir(intervals_dir)
       
-      file_name <- if (only_mutant) {
-        sprintf("%s_%s_window_bsa_intervals.xlsx", prefix, mt_label)
+      compute_file <- if (only_mutant) {
+        sprintf("%s_%s_window_compute_intervals.xlsx", prefix, mt_label)
       } else {
-        sprintf("%s_%s_vs_%s_window_bsa_intervals.xlsx", prefix, wt_label, mt_label)
+        sprintf("%s_%s_vs_%s_window_compute_intervals.xlsx",
+                prefix, wt_label, mt_label)
       }
       
-      wb <- openxlsx::createWorkbook()
+      pval_file <- if (only_mutant) {
+        sprintf("%s_%s_window_pval_intervals.xlsx", prefix, mt_label)
+      } else {
+        sprintf("%s_%s_vs_%s_window_pval_intervals.xlsx",
+                prefix, wt_label, mt_label)
+      }
+      
+      wb_compute <- openxlsx::createWorkbook()
+      wb_pval <- openxlsx::createWorkbook()
       
       add_interval_sheets <- function(x, label = "all") {
         
@@ -843,9 +852,19 @@ bsa_window <- function(
               iv <- obj$compute[[g]]$intervals
               
               if (!is.null(iv) && is.data.frame(iv) && nrow(iv) > 0L) {
-                sheet <- substr(paste(label, m, g, sep = "_"), 1, 31)
-                openxlsx::addWorksheet(wb, sheet)
-                openxlsx::writeData(wb, sheet, iv)
+                sheet <- substr(paste(label, m, g, "compute", sep = "_"), 1, 31)
+                openxlsx::addWorksheet(wb_compute, sheet)
+                openxlsx::writeData(wb_compute, sheet, iv)
+              }
+              
+              if (!is.null(obj$pval[[g]]$intervals)) {
+                iv <- obj$pval[[g]]$intervals
+                
+                if (is.data.frame(iv) && nrow(iv) > 0L) {
+                  sheet <- substr(paste(label, m, g, "pval", sep = "_"), 1, 31)
+                  openxlsx::addWorksheet(wb_pval, sheet)
+                  openxlsx::writeData(wb_pval, sheet, iv)
+                }
               }
             }
             
@@ -854,9 +873,19 @@ bsa_window <- function(
             iv <- obj$compute$intervals
             
             if (!is.null(iv) && is.data.frame(iv) && nrow(iv) > 0L) {
-              sheet <- substr(paste(label, m, sep = "_"), 1, 31)
-              openxlsx::addWorksheet(wb, sheet)
-              openxlsx::writeData(wb, sheet, iv)
+              sheet <- substr(paste(label, m, "compute", sep = "_"), 1, 31)
+              openxlsx::addWorksheet(wb_compute, sheet)
+              openxlsx::writeData(wb_compute, sheet, iv)
+            }
+            
+            if (!is.null(obj$pval$intervals)) {
+              iv <- obj$pval$intervals
+              
+              if (is.data.frame(iv) && nrow(iv) > 0L) {
+                sheet <- substr(paste(label, m, "pval", sep = "_"), 1, 31)
+                openxlsx::addWorksheet(wb_pval, sheet)
+                openxlsx::writeData(wb_pval, sheet, iv)
+              }
             }
           }
         }
@@ -868,13 +897,21 @@ bsa_window <- function(
         add_interval_sheets(win$ems, "ems")
       }
       
-      xlsx_path <- file.path(intervals_dir, file_name)
+      compute_path <- file.path(intervals_dir, compute_file)
+      pval_path <- file.path(intervals_dir, pval_file)
       
-      if (length(wb$worksheets) > 0L) {
-        openxlsx::saveWorkbook(wb, xlsx_path, overwrite = TRUE)
-        message("Saved intervals to: ", xlsx_path)
+      if (length(wb_compute$worksheets) > 0L) {
+        openxlsx::saveWorkbook(wb_compute, compute_path, overwrite = TRUE)
+        message("Saved compute intervals to: ", compute_path)
       } else {
-        message("No interval rows to save.")
+        message("No compute interval rows to save.")
+      }
+      
+      if (length(wb_pval$worksheets) > 0L) {
+        openxlsx::saveWorkbook(wb_pval, pval_path, overwrite = TRUE)
+        message("Saved pval intervals to: ", pval_path)
+      } else {
+        message("No pval interval rows to save.")
       }
       
     } else {
