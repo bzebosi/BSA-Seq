@@ -635,6 +635,59 @@ make_window_parameters <- function(
   outp
 }
 
+plot_parameter_list <- function(
+    parameters, prefix = "sample", plots_dir = "plots",
+    plot_type = c("line", "points", "histogram"),
+    plot_mode = c("both", "rollmedian", "locfit", "none"),
+    plot_style = c("wrap", "grid"), ylim = NULL, threshold = NULL, 
+    rollmedian = 501, nn_prop = 0.1, line_size = 4, bwidth = 1e6, 
+    color_panel = c("blue", "red"), device = "png", width = 45, height = 13, 
+    hwidth = 30, hheight = 18, dpi = 300) {
+  
+  plot_type <- match.arg(plot_type)
+  plot_mode <- match.arg(plot_mode)
+  plot_style <- match.arg(plot_style)
+  
+  # Histograms do not use smoothing
+  smooth_types <- if (plot_type == "histogram") {
+    "none"
+  } else {
+    switch(plot_mode,
+           both = c("rollmedian", "locfit"),
+           rollmedian = "rollmedian",
+           locfit = "locfit", none = "none")
+  }
+  
+  # Shared plotting arguments
+  common_args <- list(
+    prefix = prefix, plot_type = plot_type, ylim = ylim, threshold = threshold, 
+    rollmedian = rollmedian, nn_prop = nn_prop, line_size = line_size,
+    bwidth = bwidth, plot_style = plot_style, color_panel = color_panel,
+    plots_dir = plots_dir, device = device, width = width, height = height,
+    hwidth = hwidth, hheight = hheight, dpi = dpi)
+  
+  for (pmt in parameters) {
+    for (sm in smooth_types) {
+      
+      message(sprintf("Generating plot: %s", pmt$plot_title))
+      
+      # build output filename
+      file_suffix <- if (plot_type == "histogram") {
+        sprintf("histogram_%s", pmt$plotid)
+      } else {
+        sprintf("%s_%s", pmt$plotid, sm)
+      }
+      
+      args <- c(
+        pmt[names(pmt) != "plotid"], common_args,
+        list(file_suffix = file_suffix, smooth_type = sm)
+      )
+      do.call(plot_bsa, args)
+    }
+  }
+  invisible(parameters)
+}
+
 run_window_metrics <- function(
     data, wt = "wildtype", mt = "mutant",
     metric = c("AF", "AFD", "ED", "ED4", "G", "homozygosity"),
