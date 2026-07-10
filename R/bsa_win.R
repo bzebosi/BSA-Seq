@@ -370,12 +370,12 @@ window_pval <- function(
         stop("doorstep is required for metric p-value analysis.")
       }
       
-      bg_high <- sum(datax[[colname]] > doorstep, na.rm = TRUE)
-      bg_low  <- sum(datax[[colname]] <= doorstep, na.rm = TRUE)
+      bg_high <- sum(datax[[colname]] >= doorstep, na.rm = TRUE)
+      bg_low  <- sum(datax[[colname]] < doorstep, na.rm = TRUE)
       
       count_fun <- function(win) {
-        list(high = sum(win[[colname]] > doorstep, na.rm = TRUE),
-             low  = sum(win[[colname]] <= doorstep, na.rm = TRUE))
+        list(high = sum(win[[colname]] >= doorstep, na.rm = TRUE),
+             low  = sum(win[[colname]] < doorstep, na.rm = TRUE))
       }
     }
     
