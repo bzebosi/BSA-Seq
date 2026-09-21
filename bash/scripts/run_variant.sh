@@ -11,6 +11,10 @@ set -o pipefail
 # -------------------------------------------------------------------------------------------------------
 logmsg() { echo "$(date '+%Y-%m-%d %H:%M:%S'): $*" ; }
 
+logmsg "Config file: $(dirname "$0")/config/variant_config.sh"
+logmsg "Samples: ${samples[*]}"
+logmsg "Genomes: ${goi[*]}"
+
 
 # -------------------------------------------------------------------------------------------------------
 # Validate project and its directory
