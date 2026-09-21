@@ -4,9 +4,9 @@
 #SBATCH --cpus-per-task=8   # Number of cores
 #SBATCH --output="variant_%j.out"
 #SBATCH --error="variant_%j.error"
-#SBATCH -A leiboff_lab           # Lab account (priority)
-#SBATCH -p leiboff_lab           # Lab partition
-#SBATCH -w cerebro               # Target cerebro node (optional)
+##SBATCH -A leiboff_lab           # Lab account (priority)
+#ESBATCH -p leiboff_lab           # Lab partition
+#ESBATCH -w cerebro               # Target cerebro node (optional)
 
 # Define variables
 env_name="bsa_seq_pkgs"
