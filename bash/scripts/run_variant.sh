@@ -1,7 +1,20 @@
 #!/bin/bash
 
-# Load configuration
-source "$(dirname "$0")/config/variant_config.sh"
+# Location of this script
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Configuration file
+config_file="${script_dir}/../config/variant_config.sh"
+
+# Check configuration exists
+if [[ ! -f "${config_file}" ]]; then
+    echo "ERROR: Config file not found: ${config_file}"
+    exit 1
+else
+    # Load configuration
+    source "${config_file}"
+fi
+
 
 # Fail a pipeline if any command in it fails
 set -o pipefail
