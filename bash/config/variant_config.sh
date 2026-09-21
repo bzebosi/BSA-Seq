@@ -46,6 +46,8 @@ declare -A sample_loc=(
     [q1]="/nfs5/BPP/Leiboff_Lab/Brian/bsa_seq/bds1"
     [q2]="/nfs5/BPP/Leiboff_Lab/Brian/bsa_seq/S348"
     [q3]="/nfs5/BPP/Leiboff_Lab/Brian/bsa_seq/S344"
+    [q4]="/nfs5/BPP/Leiboff_Lab/Brian/bsa_seq/ts3"
+
 )
 
 
@@ -53,7 +55,7 @@ declare -A sample_loc=(
 # Genomes to process
 # ---------------------------------------------------------------------------------------------------------------------------------
 
-declare -a goi=( b73 )
+declare -a goi=( a619 w22 b73 mo17 a188 )
 
 # ---------------------------------------------------------------------------------------------------------------------------------
 # samples to process

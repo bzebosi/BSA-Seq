@@ -10,7 +10,7 @@
 
 # Define variables
 env_name="bsa_seq_pkgs"
-script=/nfs5/BPP/Leiboff_Lab/Brian/scripts/bsa-seq-pipeline/scripts/config/run_variant.sh
+script=/nfs5/BPP/Leiboff_Lab/Brian/scripts/bsa-seq-pipeline/scripts/run_variant.sh
 
 # Make allocated CPUs available to pipeline
 export threads="${SLURM_CPUS_PER_TASK:-8}"

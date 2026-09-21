@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Load configuration
-source "$(dirname "$0")/variant_config.sh"
+source "$(dirname "$0")/config/variant_config.sh"
 
 # Fail a pipeline if any command in it fails
 set -o pipefail
